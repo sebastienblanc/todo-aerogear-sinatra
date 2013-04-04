@@ -1,0 +1,315 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>AeroGear TODO</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link href='http://fonts.googleapis.com/css?family=Aldrich' rel='stylesheet' type='text/css'>
+
+    <script src="js/libs/modernizr-2.6.1.min.js"></script>
+
+    <!-- Placeholders for dynamic styles -->
+    <style id="project-styles"></style>
+    <style id="tag-styles"></style>
+</head>
+<body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <div>
+                    <ul class="nav">
+                        <li><a href="http://aerogear.org">AeroGear Home</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <h1>AeroGear TODO</h1>
+                <p><em><strong>**NOTE**</strong></em> - Currently, this application uses a shared database for all users. What this means is other users may be adding, editing and deleting items from the app at the same time as you. Until user sessions are put into place, have fun with it! Also, this app contains publicly entered data that others can see so please use it responsibly.</p>
+            </div>
+        </div>
+        <!-- <div id="userinfo-msg">Hello, <span id="userinfo-name"></span> <a id="logout-btn" href="#" class="btn">Logout</a></div>
+        <a id="login-btn" href="#" class="btn">Login</a> -->
+        <div class="row todo-app">
+            <div id="property-container" class="span2 navbar">
+                <h3>Projects
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target="#project-list">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                </h3>
+                <div class="nav-collapse" id="project-list">
+                    <div class="add-project"><i class="icon-plus-sign"></i> Add Project</div>
+                    <div class="add-project-form">
+                        <form id="add-project" name="project">
+                            <input type="hidden" name="id" id="project-id" value="" />
+                            <label for="project-name">Title:</label>
+                            <input type="text" name="title" id="project-title"/>
+                            <label for="project-color" class="color-picker-label">Color:</label>
+                            <input type="hidden" name="style" id="project-color" class="color-picker" value="#ffffff"/>
+                            <a class="btn submit-btn"><i class="icon-plus-sign"></i> Add Project</a>
+                            <a class="btn form-close"><i class="icon-remove"></i> Cancel</a>
+                        </form>
+                    </div>
+                    <div id="project-loader" class="loader">
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                        <div id="project-overlay"></div>
+                    </div>
+                    <div id="project-container"></div>
+                </div>
+                <h3>Tags
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target="#tag-list">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                </h3>
+                <div class="nav-collapse" id="tag-list">
+                    <div class="add-tag"><i class="icon-plus-sign"></i> Add Tag</div>
+                    <div class="add-tag-form">
+                        <form id="add-tag" name="tag">
+                            <input type="hidden" name="id" id="tag-id" value="" />
+                            <label for="tag-name">Title:</label>
+                            <input type="text" name="title" id="tag-title"/>
+                            <label for="tag-color" class="color-picker-label">Color:</label>
+                            <input type="hidden" name="style" id="tag-color" class="color-picker" value="#ffffff"/>
+                            <a class="btn submit-btn"><i class="icon-plus-sign"></i> Add Tag</a>
+                            <a class="btn form-close"><i class="icon-remove"></i> Cancel</a>
+                        </form>
+                    </div>
+                    <div id="tag-loader" class="loader">
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                        <div id="tag-overlay"></div>
+                    </div>
+                    <div id="tag-container"></div>
+                </div>
+            </div>
+            <div id="task-container" class="span9">
+                <h2>Tasks</h2>
+                <div class="add-task task"><i class="icon-plus-sign"></i> Add Task</div>
+                <div class="add-task-form task">
+                    <form id="add-task" name="task">
+                        <input type="hidden" name="id" id="task-id" value="" />
+                        <div>
+                            <div class="form-column">
+                                <label for="task-name">Title:</label>
+                                <input type="text" name="title" id="task-title"/>
+                            </div>
+                            <div class="form-column">
+                                <label for="task-date">Date:</label>
+                                <input type="text" name="date" id="task-date" placeholder="YYYY-MM-DD"/>
+                            </div>
+                        </div>
+                        <div class="form-column full">
+                            <label for="task-desc">Task Description:</label>
+                            <textarea id="task-desc" name="description"></textarea>
+                        </div>
+                        <div>
+                            <div class="form-column">
+                                <label for="task-project-select">Project:</label>
+                                <div id="task-project-column">
+                                    <select id="task-project-select" name="project">
+                                        <option value="">No Project</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-column">
+                                <label for="task-tag-column">Tag(s):</label>
+                                <div id="task-tag-column">
+                                    <strong>No Tags Available</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="btn submit-btn"><i class="icon-plus-sign"></i> Add Task</a>
+                        <a class="btn form-close"><i class="icon-remove"></i> Cancel</a>
+                    </form>
+                </div>
+                <div id="task-loader" class="loader">
+                    <div class="progress progress-striped active">
+                        <div class="bar" style="width: 100%;"></div>
+                    </div>
+                    <div id="task-overlay"></div>
+                </div>
+                <div id="task-list-container"></div>
+            </div>
+        </div>
+    </div>
+    <footer class="navbar navbar-fixed-bottom"></footer>
+    <!-- <div id="login-box" class="modal hide">
+        <form name="login" id="login-form" class="auth-form">
+            <div id="login-msg"></div>
+            <fieldset>
+                <legend>Login:</legend>
+                <div>
+                    <label for="username" id="username_label">Username</label>
+                    <input name="username" id="login-username" type="text" required placeholder="Your username" />
+                </div>
+                <div>
+                    <label for="password" id="password_label">Password</label>
+                    <input name="password" id="login-password" type="password" required />
+                </div>
+                <div data-role="controlgroup" data-type="horizontal">
+                    <input type="submit" id="login-submit" value="Login" />
+                    <input type="button" name="cancel" id="login-cancel" value="Cancel"/>
+                </div>
+                <div id="result"></div>
+            </fieldset>
+        </form>
+        <a id="register-button" class="btn">Register</a>
+    </div>
+    <div id="register-box" class="modal hide">
+        <form name="register" class="auth-form">
+            <div id="register-msg"></div>
+            <fieldset>
+                <legend>Registration:</legend>
+                <div>
+                    <label for="firstname" id="firstname_label">First name</label>
+                    <input name="firstname" id="firstname" type="text" required placeholder="Your first name" />
+                </div>
+                <div>
+                    <label for="lastname" id="lastname_label">Last name</label>
+                    <input  name="lastname" id="lastname" type="text" required placeholder="Your last name" />
+                </div>
+                <div>
+                    <label for="email" id="email_label">E-mail</label>
+                    <input name="email" id="email" type="text" required placeholder="Your e-mail" />
+                </div>
+                <div>
+                    <label for="username" id="username_label">Username</label>
+                    <input name="username" id="reg-username" type="text" required placeholder="Your username" />
+                </div>
+                <div>
+                    <label for="password" id="password_label">Password</label>
+                    <input name="password" id="reg-password" type="password" required />
+                </div>
+                <div>
+                    <label for="role" id="role_label">Role</label>
+                    <select name="role" id="reg-role">
+                        <option value="simple" selected>simple</option>
+                        <option value="admin">admin</option>
+                    </select>
+                </div>
+                <div data-role="controlgroup" data-type="horizontal">
+                    <input type="submit" id="register-login" value="Register"/>
+                    <input type="button" name="cancel" id="register-cancel" value="Cancel"/>
+                </div>
+                <div id="result"></div>
+            </fieldset>
+        </form>
+    </div>
+    <div id="auth-error-box" class="modal hide">
+        <a href="#" class="close" style="float: right;">&times;</a>
+        <h3>Authorization Error</h3>
+        <p>That function is limited to administrators. Please, login as an administrator</p>
+      </div> -->
+
+    <!-- Templates -->
+    <script type="text/template" id="task-tmpl">
+        <% _.each( tasks, function( task ) {
+            var project = _.find( projects, function(project) { return project.id == task.project; }); %>
+            <div class="task <%= project ? project.style : "" %>">
+                <div class="task-upper">
+                    <div class="task-tags">
+                        <% _.each( task.tags, function( taskTag ) {
+                            var current = _.find( tags, function(tag) { return tag.id == taskTag; }) || {};
+                                swatchClass = current.style || "",
+                                swatchTitle = current.title || "" %>
+                            <div rel="tooltip" class="swatch <%= swatchClass %>" title="<%= swatchTitle %>"></div>
+                        <% }); %>
+                    </div>
+                    <div class="task-date"><%= task.date %></div>
+                    <div class="task-title"><%= task.title %></div>
+                </div>
+                <hr>
+                <div class="task-desc"><%= task.description %></div>
+                <div class="option-overlay" data-id="<%= task.id %>" data-type="task">
+                    <div class="col">
+                        <a class="btn edit" title="Edit"><i class="icon-edit"></i><span class="btn-txt">Edit</span></a>
+                    </div>
+                    <div class="col">
+                        <a class="btn delete" title="Delete"><i class="icon-remove"></i><span class="btn-txt">Delete</span></a>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </script>
+    <script type="text/template" id="project-tmpl">
+        <% _.each( projects, function( project ) { %>
+            <div class="project <%= project.style %>">
+                <div class="option-overlay" data-id="<%= project.id %>" data-type="project">
+                    <div class="col">
+                        <a class="btn sort" title="Filter"><i class="icon-filter"></i><span class="btn-txt">Filter</span></a>
+                    </div>
+                    <div class="col">
+                        <a class="btn edit" title="Edit"><i class="icon-edit"></i><span class="btn-txt">Edit</span></a>
+                    </div>
+                    <div class="col">
+                        <a class="btn delete" title="Delete"><i class="icon-remove"></i><span class="btn-txt">Delete</span></a>
+                    </div>
+                </div>
+                <%= project.title %>
+            </div>
+        <% }); %>
+    </script>
+    <script type="text/template" id="tag-tmpl">
+        <% _.each( tags, function( tag ) { %>
+            <div class="tag">
+                <div class="swatch <%= tag.style %>"></div><%= tag.title %>
+                <div class="option-overlay" data-id="<%= tag.id %>" data-type="tag">
+                    <div class="col">
+                        <a class="btn sort" title="Filter"><i class="icon-filter"></i><span class="btn-txt">Filter</span></a>
+                    </div>
+                    <div class="col">
+                        <a class="btn edit" title="Edit"><i class="icon-edit"></i><span class="btn-txt">Edit</span></a>
+                    </div>
+                    <div class="col">
+                        <a class="btn delete" title="Delete"><i class="icon-remove"></i><span class="btn-txt">Delete</span></a>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </script>
+    <script type="text/template" id="project-select-tmpl">
+        <% _.each( projects, function( project ) { %>
+            <option value="<%= project.id %>"><%= project.title %></option>
+        <% }); %>
+    </script>
+    <script type="text/template" id="tag-select-tmpl">
+        <% _.each( tags, function( tag ) { %>
+            <div class="tag-select-column">
+                <div class="tag-select-box <%= tag.style %>">
+                    <input type="checkbox" name="tag-<%= tag.id %>" value="<%= tag.id %>"/>
+                </div><%= tag.title %>
+            </div>
+        <% }); %>
+    </script>
+    <!-- End Templates -->
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write( '<script src="js/libs/jquery.min.js"><\/script>' )</script>
+    <script src="js/libs/bootstrap.min.js"></script>
+    <script src="js/libs/lodash.min.js"></script>
+    <script src="js/libs/aerogear.min.js"></script>
+    <script src="js/libs/jquery.miniColors.min.js"></script>
+    <script src="js/libs/jquery.maskedinput-1.3.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
