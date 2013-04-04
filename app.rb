@@ -22,7 +22,8 @@ module Sinatra
     # Project endpoints
 
     post '/projects' do
-      Project.create(json_body)
+      project = Project.create(json_body)
+      project.to_json
     end
 
     delete '/projects/:id' do
@@ -43,6 +44,7 @@ module Sinatra
     put '/projects/:id' do
       project = Project.get(params[:id])
       project.update(json_body)
+      project.to_json
     end
 
     # Tasks endpoints
@@ -56,7 +58,7 @@ module Sinatra
       task.project = Project.get(json_body['project'])
       task.tags = [] 
       task.save
-      
+      task.to_json
     end
     
     delete '/tasks/:id' do
@@ -82,7 +84,8 @@ module Sinatra
     # Tags endpoints
 
     post '/tags' do
-      Tag.create(json_body)
+      tag = Tag.create(json_body)
+      tag.to_json
     end
 
     delete '/tags/:id' do
@@ -103,6 +106,7 @@ module Sinatra
     put '/tags/:id' do
       tag = Tag.get(params[:id])
       tag.update(json_body)
+      tag.to_json
     end
     
   end
