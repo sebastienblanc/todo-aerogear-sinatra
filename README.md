@@ -4,7 +4,7 @@
 
 1. Grab the sources
 
-        git clone git@github.com:abstractj/todo-aerogear-sinatra.git &&  bundle install
+        git clone git@github.com:abstractj/todo-aerogear-sinatra.git && cd todo-aerogear-sinatra && bundle install
         
 2. Run the migrations
         
