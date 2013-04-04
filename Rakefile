@@ -1,5 +1,7 @@
 require 'rubygems'
 require 'bundler/setup'
+require 'rake'
+
 require File.join(File.dirname(__FILE__), 'env')
 
 task :default => :migrate
@@ -47,5 +49,6 @@ end
 
 task :env do
   require File.join(File.dirname(__FILE__), 'env')
+  Dir::mkdir "db"
 end
 
